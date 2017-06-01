@@ -53,7 +53,6 @@ namespace VotingApp.Api
                     logger.LogInformation(@event.ToString());
                     await Task.FromResult(true);
                 })
-                .DefaultRetryAsync()
                 .Wait();
         }
     }
