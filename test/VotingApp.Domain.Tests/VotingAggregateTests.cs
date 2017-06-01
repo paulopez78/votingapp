@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using EasyEventSourcing.Aggregate;
 using VotingApp.Domain;
 using Xunit;
 
@@ -69,7 +69,7 @@ namespace VotingApp.Tests
             Action result = () => sut.Finish();
 
             // Assert
-            Assert.ThrowsAny<InvalidOperationException>(result);
+            Assert.ThrowsAny<DomainException>(result);
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace VotingApp.Tests
             Action result = () => sut.Vote("VB .NET");
 
             // Assert
-            Assert.ThrowsAny<InvalidOperationException>(result);
+            Assert.ThrowsAny<DomainException>(result);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace VotingApp.Tests
             Action result = () => sut.Vote("C#");
 
             // Assert
-            Assert.ThrowsAny<InvalidOperationException>(result);
+            Assert.ThrowsAny<DomainException>(result);
         }
     }
 }

@@ -1,0 +1,9 @@
+version: "3.1"
+
+services:
+  api:
+    image: ${REGISTRY}votingapp-api:${TAG}
+    build:
+      context: ${BUILD_CONTEXT}
+      dockerfile: ./src/VotingApp.Api/Dockerfile
+  

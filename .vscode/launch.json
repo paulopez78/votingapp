@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (web)",
+            "name": "VotingApp (dotnet)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -29,6 +29,25 @@
             },
             "sourceFileMap": {
                 "/Views": "${workspaceRoot}/Views"
+            }
+        },
+        {
+            "name": "VotingApp (Docker)",
+            "type": "coreclr",
+            "request": "launch",
+            "cwd": "/app",
+            "program": "/app/VotingApp.Api.dll",
+            "sourceFileMap": {
+                "/app": "${workspaceRoot}/src/VotingApp.Api"
+            },
+            "pipeTransport": {
+                "debuggerPath": "/vsdbg/vsdbg",
+                "pipeProgram": "/bin/bash",
+                "pipeCwd": "${workspaceRoot}",
+                "pipeArgs": [
+                    "-c",
+                    "docker exec -i votingapp_api_1 /vsdbg/vsdbg --interpreter=vscode"
+                ]
             }
         }
     ]

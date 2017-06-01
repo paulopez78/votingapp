@@ -9,6 +9,14 @@
             "args": [
                 "${workspaceRoot}/votingapp.sln"
             ],
+            "isBuildCommand": false,
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "publish",
+            "args": [
+                "${workspaceRoot}/votingapp.sln", "-c", "Debug", "-o", "bin/PublishOutput"
+            ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"
         }

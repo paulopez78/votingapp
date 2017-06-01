@@ -33,7 +33,10 @@ namespace VotingApp.Api
             services.AddSwaggerGen(c =>
                 c.SwaggerDoc("v1", new Info { Title = "Voting API", Version = "v1" })
             );
-            services.AddEasyEventSourcing<VotingAggregate>();
+            services.AddEasyEventSourcing<VotingAggregate>(
+                EventStoreOptions.Create(
+                    Configuration["EVENT_STORE"],
+                    Configuration["EVENT_STORE_MANAGER_HOST"]));
             services.AddScoped<VotingCommandsService>();
             services.AddScoped<VotingQueriesService>();
         }
@@ -50,6 +53,7 @@ namespace VotingApp.Api
                     logger.LogInformation(@event.ToString());
                     await Task.FromResult(true);
                 })
+                .DefaultRetryAsync()
                 .Wait();
         }
     }
