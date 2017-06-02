@@ -15,9 +15,21 @@
         {
             "taskName": "publish",
             "args": [
-                "${workspaceRoot}/votingapp.sln", "-c", "Debug", "-o", "bin/PublishOutput"
+                "${workspaceRoot}/votingapp.sln",
+                "-c",
+                "Debug",
+                "-o",
+                "bin/PublishOutput"
             ],
             "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "test",
+            "args": [
+                "${workspaceRoot}/test/VotingApp.Domain.Tests/VotingApp.Domain.Tests.csproj"
+            ],
+            "isBuildCommand": false,
             "problemMatcher": "$msCompile"
         }
     ]
