@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build AS build-image
+FROM microsoft/aspnetcore-build:2 AS build-image
 
 # copy shared libraries
 COPY src/VotingApp.Domain /src/VotingApp.Domain
@@ -22,7 +22,7 @@ COPY src/VotingApp.Api .
 RUN dotnet publish  --output /build/ --configuration Release
 
 # build runtime image from published release
-FROM microsoft/aspnetcore
+FROM microsoft/aspnetcore:2
 WORKDIR /app
 COPY --from=build-image build/ .
 ENTRYPOINT ["dotnet", "VotingApp.Api.dll"]

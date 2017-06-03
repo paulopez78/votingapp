@@ -15,17 +15,10 @@ namespace VotingApp.Api
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            Configuration = new ConfigurationBuilder()
-                .AddEnvironmentVariables()
-                .Build();
+        public Startup(IConfiguration configuration) =>
+            Configuration = configuration;
 
-            loggerFactory.AddConsole();
-            loggerFactory.AddDebug();
-        }
-
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {

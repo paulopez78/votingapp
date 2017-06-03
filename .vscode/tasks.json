@@ -27,7 +27,7 @@
         {
             "taskName": "test",
             "args": [
-                "${workspaceRoot}/test/VotingApp.Domain.Tests/VotingApp.Domain.Tests.csproj"
+                "${workspaceRoot}/votingapp.sln"
             ],
             "isBuildCommand": false,
             "problemMatcher": "$msCompile"
