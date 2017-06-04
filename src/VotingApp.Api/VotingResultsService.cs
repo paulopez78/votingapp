@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using EasyEventSourcing;
 using Microsoft.AspNetCore.Builder;
@@ -19,20 +20,26 @@ namespace VotingApp.Api
     {
         private readonly IEventStoreBus _eventStoreBus;
         private readonly ILogger<VotingResultsService> _logger;
+        private readonly VotingQueriesService _queries;
 
-        public VotingResultsService(IEventStoreBus eventStoreBus, ILogger<VotingResultsService> logger)
+        public VotingResultsService(IEventStoreBus eventStoreBus,
+            VotingQueriesService queries,
+            ILogger<VotingResultsService> logger)
         {
             _eventStoreBus = eventStoreBus;
+            _queries = queries;
             _logger = logger;
         }
 
-        public void Start() =>
+        public void Start()
+        {
             _eventStoreBus.Subscribe<VotingAggregate>(
-                async (@event) =>
-                {
-                    _logger.LogInformation(@event.ToString());
-                    await Task.FromResult(true);
-                })
-                .Wait();
+                async (aggregateId, @event) =>
+            {
+                var stats = await _queries.GetVotingStats(aggregateId);
+                _logger.LogInformation(@event.ToString());
+            })
+            .Wait();
+        }
     }
 }

@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   api:
-    image: paulopez/aspnetcore-debug
+    image: paulopez/aspnetcore-debug:2
     volumes: 
       - ./src/VotingApp.Api/bin/PublishOutput/:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro
