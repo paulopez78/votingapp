@@ -1,0 +1,80 @@
+<html>
+Super simple real time voting with DDD/ES/CQRS, .NET Core, eventsore, websockets and Docker
+<br/><br/>
+<input id="topics" type="text" />
+<button id='start'>
+    START
+</button>
+<button id='finish'>
+    FINISH
+</button>
+<br/><br/>
+<div id="votingTopics">
+</div>
+
+<div id="votingStats">
+</div>
+
+<script>
+    const baseUrl = `${window.location.href}api/`;
+    const url = `${baseUrl}voting/`;
+    const urlstats = `${baseUrl}votingstats/`;
+    const client = (url, method, body) => 
+        fetch(url, { method, headers: { Accept: 'application/json', 'Content-Type': 'application/json'}, body });
+
+    const getVoting = (url) =>
+        client(url, 'GET')
+        .then(r => r.json());
+
+    const startVoting = (topics) =>
+        client(url, 'POST', JSON.stringify(topics))
+        .then(r => r.json());
+
+    const finishVoting = (votingId) =>
+        client(`${url}${votingId}`, 'DELETE')
+        .then(r => r.json());
+
+    const vote = (votingId, topic) =>
+        client(`${url}${votingId}`, 'PUT', `"${topic}"`)
+        .then(r => r.json());
+
+    function render(data) {
+        addEventHandler('start', () => startVoting(document.getElementById('topics').value.split(',')).then(render));
+        addEventHandler('finish', () => finishVoting(data.votingId).then(render));        
+
+        document.getElementById('votingTopics').innerHTML = '';
+        for (var topic in data.topics) {
+            document.getElementById('votingTopics').innerHTML +=
+                `<div id='${topic}' onclick=vote('${data.votingId}','${topic}')>${topic}</div>`
+        }
+
+        function addEventHandler(id, handler) {
+            var el = document.getElementById(id),
+            elClone = el.cloneNode(true);
+            el.parentNode.replaceChild(elClone, el);
+            document.getElementById(id).addEventListener('click', handler, false);
+        }
+    }
+
+    function renderStats(data) {
+        console.log(data);
+        document.getElementById('votingStats').innerHTML = data.winner && `Winner:${data.winner}`;
+        for (var topic in data.votes) {
+            document.getElementById('votingStats').innerHTML +=
+                `<div id='${topic}'>${topic}, percent:${data.votes[topic].item1}</div>`
+        }
+    }
+
+    (function () {
+        getVoting(url).then(render);
+        getVoting(urlstats).then(renderStats);
+        subscribe(renderStats);
+
+        function subscribe(action) {
+            const webSocket = new WebSocket(`ws://${window.location.host}/ws`);
+            webSocket.onmessage = msg => action(JSON.parse(msg.data))
+        }
+    })();
+
+</script>
+</html>
