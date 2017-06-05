@@ -19,13 +19,13 @@ namespace VotingApp.Api
             _queries = queries;
         }
 
+        [HttpGet]
+        public async Task<VotingProjection> Get() => 
+            await _queries.GetVoting();
+
         [HttpGet("{votingId}")]
         public async Task<VotingProjection> Get(Guid votingId) => 
             await _queries.GetVoting(votingId);
-
-        [HttpGet("{votingId}/stats")]
-        public async Task<VotingStatsProjection> GetStats(Guid votingId) => 
-            await _queries.GetVotingStats(votingId);
 
         [HttpPost]
         public async Task<VotingProjection> Post([FromBody]string[] topics) =>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using EasyWebSockets;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
@@ -16,6 +17,7 @@ namespace VotingApp.Api
         public void ConfigureServices(IServiceCollection services) =>
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "Voting API", Version = "v1" }))
                     .AddEasyEventSourcing<VotingAggregate>(Configuration)
+                    .AddEasyWebSockets()
                     .AddScoped<VotingCommandsService>()
                     .AddScoped<VotingQueriesService>()
                     .AddSingleton<VotingResultsService>()
@@ -23,9 +25,12 @@ namespace VotingApp.Api
 
         public void Configure(IApplicationBuilder app) =>
             app.UseExceptionHandler()
+                .UseDefaultFiles()
+                .UseStaticFiles()
                 .UseMvc()
                 .UseSwagger()
                 .UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "VotingApp API"))
+                .UseEasyWebSockets()
                 .UseVotingResultsService();
     }
 }

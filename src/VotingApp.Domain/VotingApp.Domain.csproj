@@ -3,7 +3,7 @@
     <TargetFramework>netstandard1.4</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EasyEventSourcing" Version="0.0.27" />
+    <PackageReference Include="EasyEventSourcing" Version="0.0.33" />
     <PackageReference Include="System.ValueTuple" Version="4.3.1" />
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/src/VotingApp.Api/bin/Debug/netcoreapp1.1/VotingApp.Api.dll",
+            "program": "${workspaceRoot}/src/VotingApp.Api/bin/Debug/netcoreapp2.0/VotingApp.Api.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
             "stopAtEntry": false,
@@ -23,9 +23,6 @@
                 "linux": {
                     "command": "xdg-open"
                 }
-            },
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceRoot}/Views"

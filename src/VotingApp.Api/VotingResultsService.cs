@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using EasyEventSourcing;
+using EasyWebSockets;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
 using VotingApp.Domain;
@@ -23,12 +24,15 @@ namespace VotingApp.Api
         private readonly ILogger<VotingResultsService> _logger;
         private readonly VotingQueriesService _queries;
         private ConcurrentDictionary<Guid, VotingStatsProjection> _votingStats;
+        private readonly IWebSocketPublisher _wsPublisher;
 
         public VotingResultsService(IEventStoreBus eventStoreBus,
+            IWebSocketPublisher wsPublisher,
             VotingQueriesService queries,
             ILogger<VotingResultsService> logger)
         {
             _eventStoreBus = eventStoreBus;
+            _wsPublisher = wsPublisher;
             _queries = queries;
             _logger = logger;
             _votingStats = new ConcurrentDictionary<Guid, VotingStatsProjection>();
@@ -36,35 +40,21 @@ namespace VotingApp.Api
 
         public void Start()
         {
-            _eventStoreBus.Subscribe<VotingAggregate>((Func<Guid, object, Task>)(async (aggregateId, @event) =>
+            _eventStoreBus.Subscribe<VotingAggregate>(async (aggregateId, @event) =>
             {
-                switch (@event)
-                {
-                    case VotingStartedEvent startedEvent:
-                        _votingStats[aggregateId] = await _queries.GetVotingStats(aggregateId);
-                        break;
-
-                    case TopicVotedEvent votedEvent:
-                    case VotingFinishedEvent finishedEvent:
-                        await AddOrUpdate(aggregateId, @event);
-                        break;
-
-                    default:
-                        break;
-                }
                 _logger.LogInformation(@event.ToString());
-
-                // TODO: Broadcast stats using websockets to clients
-            }))
+                await AddOrUpdateVotingStats(aggregateId, @event);
+                await _wsPublisher.SendMessageToAllAsync(_votingStats[aggregateId]);
+            })
             .Wait();
+        }
 
-            async Task AddOrUpdate(Guid aggregateId, object @event)
-            {
-                if (_votingStats.TryGetValue(aggregateId, out VotingStatsProjection stats))
-                    _votingStats[aggregateId] = stats.Reduce(@event);
-                else
-                    _votingStats[aggregateId] = await _queries.GetVotingStats(aggregateId);
-            }
+        private async Task AddOrUpdateVotingStats(Guid aggregateId, object @event)
+        {
+            if (_votingStats.TryGetValue(aggregateId, out VotingStatsProjection stats))
+                _votingStats[aggregateId] = stats.Reduce(@event);
+            else
+                _votingStats[aggregateId] = await _queries.GetVotingStats(aggregateId);
         }
     }
 }
