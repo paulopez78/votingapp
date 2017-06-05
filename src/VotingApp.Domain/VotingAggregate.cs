@@ -20,7 +20,7 @@ namespace VotingApp.Domain
         public void Start(params string[] topics)
         {
             topics = topics ?? throw new ArgumentNullException(nameof(topics));
-            RaiseEvent(new VotingStartedEvent(topics));
+            RaiseEvent(new VotingStartedEvent(Id, topics));
         }
 
         public void Vote(string topic)

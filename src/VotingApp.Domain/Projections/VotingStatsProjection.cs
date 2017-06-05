@@ -8,23 +8,28 @@ namespace VotingApp.Domain
 {
     public class VotingStatsProjection
     {
+        public Guid VotingId { get; }
         public IDictionary<string, (int percent, int votes)> Votes { get; }
         public string Winner { get; }
 
-        public VotingStatsProjection(IDictionary<string, (int, int)> votes, string winner = "")
+        public VotingStatsProjection(Guid votingId, IDictionary<string, (int, int)> votes, string winner = "")
         {
+            VotingId = votingId;
             Votes = votes;
             Winner = winner;
         }
 
         public VotingStatsProjection With(string winner) =>
-            new VotingStatsProjection(this.Votes, winner);
+            new VotingStatsProjection(this.VotingId, this.Votes, winner);
+
+        public VotingStatsProjection With(Guid votingId, IDictionary<string, (int, int)> votes) =>
+            new VotingStatsProjection(votingId, votes, this.Winner);
 
         public VotingStatsProjection With(IDictionary<string, (int, int)> votes) =>
-            new VotingStatsProjection(votes, this.Winner);
+            new VotingStatsProjection(this.VotingId, votes, this.Winner);
 
         public static VotingStatsProjection Empty() =>
-            new VotingStatsProjection(new Dictionary<string, (int, int)>());
+            new VotingStatsProjection(Guid.Empty, new Dictionary<string, (int, int)>());
     }
 
     public static class VotingStatsProjectionExtensions
@@ -36,6 +41,7 @@ namespace VotingApp.Domain
             {
                 case VotingStartedEvent votingStarted:
                     return state.With(
+                        votingStarted.VotingId,
                         votingStarted.Topics.ToDictionary(x => x, _ => (percent: 0, votes: 0)));
 
                 case TopicVotedEvent voted:

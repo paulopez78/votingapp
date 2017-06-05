@@ -36,7 +36,7 @@ namespace VotingApp.Tests
         }
 
         private List<object> GetEvents() => new object[] {
-                new VotingStartedEvent("C#", "F#"),
+                new VotingStartedEvent(Guid.NewGuid(), "C#", "F#"),
                 new TopicVotedEvent("C#"),
                 new TopicVotedEvent("F#"),
                 new TopicVotedEvent("F#"),
