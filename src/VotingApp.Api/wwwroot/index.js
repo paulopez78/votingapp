@@ -3,21 +3,28 @@
     votingApi.get().then(render);
     votingApi.getStats().then(renderStats);
 
-    utils.addEventHandler('startBtn',
-        () => votingApi.start(document.getElementById('topics').value).then(render));
-
     function render(state) {
-        if (state.error) {
-            document.getElementById('errors').innerHTML = state.error;
-        }
-        else {
-            document.getElementById('errors').innerHTML = '';
-            utils.addEventHandler('finishBtn', () => votingApi.finish(state.votingId).then(render));
-            utils.renderOptions('votingTopics', 'option active',
-                state.topics,
-                (topic) => topic,
-                (topic) => `votingApi.vote('${state.votingId}', '${topic}')`);
-        }
+        const isAdmin = window.location.search.indexOf('admin') !== -1;
+        isAdmin ? renderCommands(state) : document.getElementById('admin').style.display = 'none';
+
+        !state.error && renderVoting(state);
+    }
+
+    function renderCommands(state) {
+        utils.addEventHandler('startBtn',
+            () => votingApi.start(document.getElementById('topics').value).then(render));
+        
+        document.getElementById('errors').innerHTML = '';
+        state.error 
+            ? document.getElementById('errors').innerHTML = state.error
+            : utils.addEventHandler('finishBtn', () => votingApi.finish(state.votingId).then(render));
+    }
+
+    function renderVoting(state) {
+        utils.renderOptions('votingTopics', 'option active',
+            state.topics,
+            (topic) => topic,
+            (topic) => `votingApi.vote('${state.votingId}', '${topic}')`);
     }
 
     function renderStats(state) {

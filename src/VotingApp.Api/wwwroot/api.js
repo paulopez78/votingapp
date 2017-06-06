@@ -1,5 +1,5 @@
 const votingApi = (function () {
-    const baseUrl = `${window.location.href}api/`;
+    const baseUrl = `//${window.location.host}/api/`;
     const apiUrl = `${baseUrl}voting/`;
 
     const client = (url, method, body) =>
