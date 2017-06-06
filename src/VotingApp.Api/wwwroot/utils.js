@@ -6,7 +6,7 @@ const utils = (function () {
         document.getElementById(id).addEventListener('click', handler, false);
     }
 
-    function renderOptions(rootId, className, list, getText, getClickHandler = () => '') {
+    const renderOptions= (rootId, className, list, getText, getClickHandler = () => '') => {
         document.getElementById(rootId).innerHTML = '';
         for (var item in list) {
             document.getElementById(rootId).innerHTML +=

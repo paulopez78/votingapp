@@ -1,11 +1,13 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Voting App</title>
     <link href="index.css" rel="stylesheet">
 </head>
+
 <body>
     <div id="root">
         <h1>Voting App</h1>
@@ -15,10 +17,9 @@
         </div>
         <div class='buttons'>
             <input id="topics" class="input" type="text" />
-            <button id='start' class="button">start</button>
-            <button id='finish' class="button">finish</button>
-        </div>
-        <div id="errors">
+            <button id='startBtn' class="button">start</button>
+            <button id='finishBtn' class="button">finish</button>
+            <div id="errors"></div>
         </div>
     </div>
 
@@ -26,4 +27,5 @@
     <script src="api.js"></script>
     <script src="index.js"></script>
 </body>
+
 </html>
