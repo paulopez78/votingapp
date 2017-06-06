@@ -15,7 +15,7 @@ Super simple real time voting with DDD/ES/CQRS, .NET Core, eventsore, websockets
 <script>
     function render(state) {
         addEventHandler('start', () => votingApi.start(document.getElementById('topics').value).then(render));
-        addEventHandler('finish', () => votingApi.finish(data.votingId).then(render));
+        addEventHandler('finish', () => votingApi.finish(state.votingId).then(render));
 
         document.getElementById('votingTopics').innerHTML = '';
         for (var topic in state.topics) {
