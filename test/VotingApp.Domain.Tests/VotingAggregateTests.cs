@@ -35,6 +35,32 @@ namespace VotingApp.Tests
         }
 
         [Fact]
+        public void Given_Same_Topics_When_Starting_Voting_Then_Exception()
+        {
+            // Arrange
+            var sut = new VotingAggregate();
+            
+            // Act
+            Action result = () => sut.Start("C#","C#");
+
+            // Assert
+            Assert.ThrowsAny<DomainException>(result);
+        }
+
+        [Fact]
+        public void Given_Some_Equal_Topics_When_Starting_Voting_Then_Exception()
+        {
+            // Arrange
+            var sut = new VotingAggregate();
+            
+            // Act
+            Action result = () => sut.Start("C#","F#", "C#");
+
+            // Assert
+            Assert.ThrowsAny<DomainException>(result);
+        }
+
+        [Fact]
         public void Given_Two_Topics_When_Starting_Voting_Then_VotingStartedEvent()
         {
             // Arrange

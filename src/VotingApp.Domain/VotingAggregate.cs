@@ -21,6 +21,8 @@ namespace VotingApp.Domain
         {
             topics = topics ?? throw new ArgumentNullException(nameof(topics));
             if (topics.Length < 2) throw new DomainException($"Provide at least 2 topics for starting the voting");
+            if (topics.Distinct().Count() != topics.Count()) throw new DomainException("Duplicated topics are not allowed");
+
             RaiseEvent(new VotingStartedEvent(Id, topics));
         }
 
