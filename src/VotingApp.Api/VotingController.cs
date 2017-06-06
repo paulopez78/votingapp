@@ -29,11 +29,11 @@ namespace VotingApp.Api
 
         [HttpPost]
         public async Task<VotingProjection> Post([FromBody]string[] topics) =>
-            await _commands.StartVoting(topics);
+            await _commands.StartVoting(topics.Select(x => x.ToLower()).ToArray());
 
         [HttpPut("{votingId}")]
         public async Task<VotingProjection> Put(Guid votingId, [FromBody]string topic) =>
-            await _commands.Vote(votingId, topic);
+            await _commands.Vote(votingId, topic.ToLower());
 
         [HttpDelete("{votingId}")]
         public async Task<VotingProjection> Delete(Guid votingId) =>

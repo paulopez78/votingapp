@@ -51,6 +51,6 @@
             _ => 'result',
             (vote) => `${vote} ${state.votes[vote].item1}%`);
 
-        state.winner && (document.getElementById(`votingStats-${state.winner.toLowerCase()}`).className = 'result selected');
+        state.winner && (document.getElementById(`votingStats-${state.winner}`).className = 'result selected');
     }
 })();

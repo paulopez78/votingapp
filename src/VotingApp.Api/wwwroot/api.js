@@ -12,7 +12,7 @@ const votingApi = (function () {
     const getStats = get.bind(null, `${baseUrl}votingstats/`);
 
     const start = (topics) =>
-        client(apiUrl, 'POST', JSON.stringify(topics && topics.toUpperCase().split(',')))
+        client(apiUrl, 'POST', JSON.stringify(topics && topics.split(',')))
         .then(r => r.json());
 
     const finish = (votingId) =>
@@ -20,7 +20,7 @@ const votingApi = (function () {
         .then(r => r.json());
 
     const vote = (votingId, topic) =>
-        client(`${apiUrl}${votingId}`, 'PUT', `"${topic.toUpperCase()}"`)
+        client(`${apiUrl}${votingId}`, 'PUT', `"${topic}"`)
         .then(r => r.json());
 
     const subscribe = (action) => {
