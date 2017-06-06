@@ -10,7 +10,7 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
 
     <PackageReference Include="System.ValueTuple" Version="4.3.1"/>
-    <PackageReference Include="EasyEventSourcing" Version="0.0.33" />
+    <PackageReference Include="EasyEventSourcing" Version="0.0.38" />
   </ItemGroup>
 
   <ItemGroup>
