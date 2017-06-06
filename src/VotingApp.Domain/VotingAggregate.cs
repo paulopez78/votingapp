@@ -20,6 +20,7 @@ namespace VotingApp.Domain
         public void Start(params string[] topics)
         {
             topics = topics ?? throw new ArgumentNullException(nameof(topics));
+            if (topics.Length < 2) throw new DomainException($"Provide at least 2 topics for starting the voting");
             RaiseEvent(new VotingStartedEvent(Id, topics));
         }
 

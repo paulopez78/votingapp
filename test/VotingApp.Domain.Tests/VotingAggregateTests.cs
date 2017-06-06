@@ -9,6 +9,32 @@ namespace VotingApp.Tests
     public class VotingAggregateTests
     {
         [Fact]
+        public void Given_Empty_Topics_When_Starting_Voting_Then_Exception()
+        {
+            // Arrange
+            var sut = new VotingAggregate();
+            
+            // Act
+            Action result = () => sut.Start(null);
+
+            // Assert
+            Assert.ThrowsAny<ArgumentNullException>(result);
+        }
+
+        [Fact]
+        public void Given_Only_One_Topic_When_Starting_Voting_Then_Exception()
+        {
+            // Arrange
+            var sut = new VotingAggregate();
+            
+            // Act
+            Action result = () => sut.Start("C#");
+
+            // Assert
+            Assert.ThrowsAny<DomainException>(result);
+        }
+
+        [Fact]
         public void Given_Two_Topics_When_Starting_Voting_Then_VotingStartedEvent()
         {
             // Arrange
