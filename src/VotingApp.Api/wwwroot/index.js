@@ -1,35 +1,48 @@
 (function () {
-    votingApi.subscribe(renderStats);
-    votingApi.get().then(render);
-    votingApi.getStats().then(renderStats);
+    votingApi.subscribe(setState);
+    votingApi.getStats().then(setState);
+
+    let state = {};
+    function setState(newState)
+    {
+        state = Object.assign(state, newState); 
+        render(state);
+    }
 
     function render(state) {
         const isAdmin = window.location.search.indexOf('admin') !== -1;
-        isAdmin ? renderCommands(state) : document.getElementById('admin').style.display = 'none';
+        if (isAdmin){
+            document.getElementById('voting').style.display = 'none';
+            renderCommands(state)
+        }
+        else{
+            document.getElementById('admin').style.display = 'none';
+            renderVoting(state);
+        }
 
-        !state.error && renderVoting(state);
+        renderStats(state);
     }
 
-    function renderCommands(state) {
-        utils.addEventHandler('startBtn',
-            () => votingApi.start(document.getElementById('topics').value).then(render));
-        
+    function renderCommands({votingId, error}) {
+        const startHandler = _ => votingApi.start(document.getElementById('topics').value).then(setState);
+        const finishHandler = _ => votingApi.finish(votingId).then(setState)
+
+        utils.addEventHandler('startBtn', startHandler);
+
         document.getElementById('errors').innerHTML = '';
-        state.error 
-            ? document.getElementById('errors').innerHTML = state.error
-            : utils.addEventHandler('finishBtn', () => votingApi.finish(state.votingId).then(render));
+        error ? document.getElementById('errors').innerHTML = error 
+        : utils.addEventHandler('finishBtn', finishHandler);
     }
 
     function renderVoting(state) {
-        const voteHandler = (votingId, topic) =>
-            votingApi.vote(state.votingId, topic)
-                .then(state => render(Object.assign(state, {selectedTopic:topic})));
+        const voteHandler = (vote) => 
+            votingApi.vote(state.votingId, vote).then(() => setState({vote}));
 
         utils.renderOptions('votingTopics',
-            state.topics,
-            (topic) => `option ${state.selectedTopic == topic ? 'selected' : 'active'}`,
-            (topic) => topic,
-            (topic) => voteHandler(state.votingId, topic));
+            state.votes,
+            (vote) => `option ${state.vote == vote ? 'selected' : 'active'}`,
+            (vote) => vote,
+            (vote) => voteHandler(vote));
     }
 
     function renderStats(state) {
@@ -38,6 +51,6 @@
             _ => 'result',
             (vote) => `${vote} ${state.votes[vote].item1}%`);
 
-        state.winner && (document.getElementById(`votingStats-${state.winner}`).className = 'result selected');
+        state.winner && (document.getElementById(`votingStats-${state.winner.toLowerCase()}`).className = 'result selected');
     }
 })();
