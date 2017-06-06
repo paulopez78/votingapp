@@ -21,15 +21,21 @@
     }
 
     function renderVoting(state) {
-        utils.renderOptions('votingTopics', 'option active',
+        const voteHandler = (votingId, topic) =>
+            votingApi.vote(state.votingId, topic)
+                .then(state => render(Object.assign(state, {selectedTopic:topic})));
+
+        utils.renderOptions('votingTopics',
             state.topics,
+            (topic) => `option ${state.selectedTopic == topic ? 'selected' : 'active'}`,
             (topic) => topic,
-            (topic) => `votingApi.vote('${state.votingId}', '${topic}')`);
+            (topic) => voteHandler(state.votingId, topic));
     }
 
     function renderStats(state) {
-        utils.renderOptions('votingStats', 'result',
+        utils.renderOptions('votingStats',
             state.votes,
+            _ => 'result',
             (vote) => `${vote} ${state.votes[vote].item1}%`);
 
         state.winner && (document.getElementById(`votingStats-${state.winner}`).className = 'result selected');

@@ -6,13 +6,20 @@ const utils = (function () {
         document.getElementById(id).addEventListener('click', handler, false);
     }
 
-    const renderOptions= (rootId, className, list, getText, getClickHandler = () => '') => {
+    const renderOptions = (rootId, list, getClass, getText, clickHandler) => {
         document.getElementById(rootId).innerHTML = '';
+        
         for (var item in list) {
             document.getElementById(rootId).innerHTML +=
-                `<div class="${className}" id="${rootId}-${item}" onclick="${getClickHandler(item)}">
+                `<div class="${getClass(item)}" id="${rootId}-${item}"">
                     ${getText(item)}
                 </div>`;
+        }
+
+        if (clickHandler) {
+            for (let item in list) {
+                addEventHandler(`${rootId}-${item}`, () => clickHandler(item));
+            }
         }
     }
 
