@@ -1,0 +1,130 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,300);
+body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    text-align: center;
+    flex: 1 100%;
+    font-weight: 100;
+    font-style: normal;
+    margin: 0px;
+}
+
+h1 {
+    font-size: 45px;
+}
+
+.root {
+    position: relative;
+    height: 100vh;
+}
+
+.input {
+     width: 200px;
+     display: inline-block;
+     margin: 10px;
+     padding: 10px 10px;
+     border: 1px solid #00BCD4;
+     font-size: 16px;
+     text-decoration: none;
+     text-transform: uppercase;
+     outline: none;
+ }
+
+.buttons {
+     display: flex;
+     flex-wrap: wrap;
+     flex-direction: row;
+     align-items: center;
+     justify-content: center;
+ }
+ 
+.button {
+     width: 200px;
+     display: inline-block;
+     margin: 10px;
+     padding: 10px 10px;
+     border: 1px solid #00BCD4;
+     background: #00BCD4;
+     color: #fff;
+     font-size: 16px;
+     text-decoration: none;
+     text-transform: uppercase;
+     outline: none;
+ }
+ 
+ .button:hover {
+     background: #4DD0E1;
+     border: 1px solid #4DD0E1;
+ }
+ 
+ .question {
+    display: block;
+    margin: 20px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+    border-radius: 2px;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: #000;
+    background-color: #fff;
+}
+
+.option {
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    outline: none;
+    text-transform: uppercase;
+}
+
+.option.active:hover {
+    background: #7986CB;
+    color: #fff;
+}
+
+.option.selected {
+    background: #3F51B5;
+    color: #fff;
+}
+
+.results {
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.result {
+    display: block;
+    margin: 20px;
+    padding: 20px 10px;
+    width: 240px;
+    box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+    border-radius: 2px;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: #000;
+    background-color: #fff;
+    text-transform: uppercase;
+}
+
+.result.selected {
+    background: #3F51B5;
+    color: #fff;
+}

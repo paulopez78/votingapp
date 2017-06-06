@@ -1,49 +1,29 @@
-<html>
-Super simple real time voting with DDD/ES/CQRS, .NET Core, eventsore, websockets and Docker
-<br/><br/>
-<input id="topics" type="text" />
-<button id='start'>START</button>
-<button id='finish'>FINISH
-</button>
-<br/><br/>
-<div id="votingTopics">
-</div>
-<div id="votingStats">
-</div>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Voting App</title>
+    <link href="index.css" rel="stylesheet">
+</head>
+<body>
+    <div id="root">
+        <h1>Voting App</h1>
+        <div id="votingTopics" class="question">
+        </div>
+        <div id="votingStats" class="results">
+        </div>
+        <div class='buttons'>
+            <input id="topics" class="input" type="text" />
+            <button id='start' class="button">start</button>
+            <button id='finish' class="button">finish</button>
+        </div>
+        <div id="errors">
+        </div>
+    </div>
 
-<script src="votingApi.js"></script>
-<script>
-    function render(state) {
-        addEventHandler('start', () => votingApi.start(document.getElementById('topics').value).then(render));
-        addEventHandler('finish', () => votingApi.finish(state.votingId).then(render));
-
-        document.getElementById('votingTopics').innerHTML = '';
-        for (var topic in state.topics) {
-            document.getElementById('votingTopics').innerHTML +=
-                `<div id='${topic}' onclick=votingApi.vote('${state.votingId}','${topic}')>${topic}</div>`
-        }
-
-        function addEventHandler(id, handler) {
-            var el = document.getElementById(id),
-                elClone = el.cloneNode(true);
-            el.parentNode.replaceChild(elClone, el);
-            document.getElementById(id).addEventListener('click', handler, false);
-        }
-    }
-
-    function renderStats(state) {
-        document.getElementById('votingStats').innerHTML = state.winner ? `Winner:${state.winner}`: '';
-        for (var topic in state.votes) {
-            document.getElementById('votingStats').innerHTML +=
-                `<div id='${topic}'>${topic}, percent:${state.votes[topic].item1}</div>`
-        }
-    }
-
-    (function () {
-        votingApi.get().then(render);
-        votingApi.getStats().then(renderStats);
-        votingApi.subscribe(renderStats);
-    })();
-</script>
-
+    <script src="utils.js"></script>
+    <script src="api.js"></script>
+    <script src="index.js"></script>
+</body>
 </html>
