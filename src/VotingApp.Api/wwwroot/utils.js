@@ -6,9 +6,11 @@ const utils = (function () {
         document.getElementById(id).addEventListener('click', handler, false);
     }
 
-    const renderOptions = (rootId, list, getClass, getText, clickHandler) => {
-        document.getElementById(rootId).innerHTML = '';
-        
+    const renderOptions = (rootId, list, getClass, getText, defaultText = '', clickHandler) => {
+        list 
+        ? document.getElementById(rootId).innerHTML = ''
+        : document.getElementById(rootId).innerHTML = `<h2>${defaultText}</h2>`;
+
         for (var item in list) {
             document.getElementById(rootId).innerHTML +=
                 `<div class="${getClass(item)}" id="${rootId}-${item}"">
