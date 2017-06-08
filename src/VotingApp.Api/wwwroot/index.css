@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', Helvetica, sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 300;
 }
 
@@ -29,7 +29,7 @@ h1 {
 }
 
 .input {
-     width: 200px;
+     width: 300px;
      display: inline-block;
      margin: 10px;
      padding: 10px 10px;
@@ -85,7 +85,6 @@ h1 {
     border: none;
     background: transparent;
     cursor: pointer;
-    font-size: 14px;
     text-align: left;
     outline: none;
     text-transform: uppercase;
