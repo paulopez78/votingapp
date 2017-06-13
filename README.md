@@ -11,5 +11,4 @@ Super simple real time voting app using eventsourcing, cqrs, .net core and docke
 
   Open <http://localhost:2113> for manage event store
 
-## Voting App Architecture
 ![Voting App Architecture](https://github.com/paulopez78/votingapp/blob/master/docs/VotingAppArchitecture.jpg)
